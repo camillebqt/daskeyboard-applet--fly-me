@@ -1,75 +1,52 @@
 const q = require('daskeyboard-applet');
+const request = require('request-promise');
 const logger = q.logger; 
 
 class FlyMe extends q.DesktopApp {
-
+	
     constructor() {
         super();
         // every minutes
         this.pollingInterval = 60*1000; // ms
-        logger.info("Get the cheapest flight price!");
+		logger.info("Get the cheapest flight price!");
+		this.config = {
+			ORIGIN_PLACE: 'SFO',
+			DESTINATION_PLACE: 'AUS',
+			DEPART_DATE: '2020-01-01',
+			RETURN_DATE: '2020-01-10'
+		};
+		this.getPrice();
     }
 
     async run() {
-	}
-}   
 
+	}  
 
-// skyscanner api url
-const API_BASE_URL = `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices`;
-
-function postMethod(){
-	const settings = {
-		API_URL : `${API_BASE_URL}/pricing/v1.0/US/USD/en-US/${this.config.ORIGIN_PLACE}-sky/${this.config.DESTINATION_PLACE}-sky/${DEPART_DATE}?inboundpartialdate=${RETURN_DATE}`,
-		method: 'POST',
-		headers: {
-			'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
-			'x-rapidapi-key': `${apiKey}`,
-			'content-type': "application/json",
-			'location': `http://partners.api.skyscanner.net/apiservices/pricing/uk2/v1.0/${SESSION_KEY}`
-		},
-		data: {
-			"inboundDate": this.config.RETURN_DATE,
-			"originPlace": this.config.ORIGIN_PLACE,
-			"destinationPlace": this.config.DESTINATION_PLACE,
-			"outboundDate": this.config.DEPART_DATE
+	getPrice(){
+		const API_BASE_URL = `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices`;
+		const apiKey = 'SECRET';
+		const settings = {
+			url: `${API_BASE_URL}/browsequotes/v1.0/US/USD/en-US/${this.config.ORIGIN_PLACE}-sky/${this.config.DESTINATION_PLACE}-sky/${this.config.DEPART_DATE}?inboundpartialdate=${this.config.RETURN_DATE}`,
+			method: 'GET',
+			headers: {
+				"x-rapidapi-host": "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
+				"x-rapidapi-key": `${apiKey}`
+			}
 		}
-	};
-	return request(settings).then(SESSION_KEY => {
-		return SESSION_KEY;
-	});
-}
+		console.log(settings.url)
+		return request(settings).then(answer => {
+			const json = JSON.parse(answer);
+			console.log('>>>', json.Quotes[0].MinPrice);
+			return answer;
 
-function getMethod(){
-	const settings = {
-		url: `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/pricing/uk2/v1.0/${SESSION_KEY}?pageIndex=0&pageSize=10`,
-		// SESSION_KEY est recue dans "location" dans le headers lors de la creation de la session // TODO: comment recuperer cette valeur??
-		method: 'GET',
-		headers: {
-			'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
-			'x-rapidapi-key': `${apiKey}`
-		}
+		});
 	}
 }
-
-// Goal: collect the price ?? TO DO : COMMENT ????????????????????????????
-function getPrice(){
-	const settings = {
-		url: `${API_BASE_URL}/apiservices/browsequotes/v1.0/US/USD/en-US/${this.config.ORIGIN_PLACE}-sky/${this.config.DESTINATION_PLACE}-sky/${DEPART_DATE}?inboundpartialdate=${RETURN_DATE}`,
-		method: 'GET',
-		headers: {
-			"x-rapidapi-host": "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
-			"x-rapidapi-key": `${apiKey}`
-		}
-	}
-}
-
-
 module.exports = {
-    BirthdayReminder: BirthdayReminder
+    FlyMe: FlyMe
 }
 
-const applet = new BirthdayReminder();
+const applet = new FlyMe();
 
 
 
