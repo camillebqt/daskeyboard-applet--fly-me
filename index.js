@@ -42,7 +42,7 @@ function getMethod(){
 
 function getPrice(){
 	const settings = {
-		url: `${API_BASE_URL}/apiservices/browsequotes/v1.0/US/USD/en-US/SFO-sky/JFK-sky/2020-01-01?inboundpartialdate=2020-10-01`,
+		url: `${API_BASE_URL}/apiservices/browsequotes/v1.0/US/USD/en-US/${this.config.ORIGIN_PLACE}-sky/${this.config.DESTINATION_PLACE}-sky/${DEPART_DATE}?inboundpartialdate=${RETURN_DATE}`,
 		method: 'GET',
 		headers: {
 			"x-rapidapi-host": "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
