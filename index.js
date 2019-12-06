@@ -52,7 +52,7 @@ function getMethod(){
 	}
 }
 
-// Goal: collect the price
+// Goal: collect the price ?? TO DO : COMMENT ????????????????????????????
 function getPrice(){
 	const settings = {
 		url: `${API_BASE_URL}/apiservices/browsequotes/v1.0/US/USD/en-US/${this.config.ORIGIN_PLACE}-sky/${this.config.DESTINATION_PLACE}-sky/${DEPART_DATE}?inboundpartialdate=${RETURN_DATE}`,
