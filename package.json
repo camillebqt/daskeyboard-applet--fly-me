@@ -30,7 +30,7 @@
   "license": "MIT",
   "dependencies": {
     "daskeyboard-applet": "^2.11.4",
-    "local-storage": "^2.0.0"
+    "localStorage": "^1.0.4"
   },
   "qConfig": {
     "geometry": {
@@ -83,7 +83,6 @@
         "value": "0",
         "controlType": "textbox"
       }
-      
     ]
   },
   "devDependencies": {

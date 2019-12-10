@@ -6,11 +6,6 @@ const {
     FlyMe
 } = require('../index');
 
-const ORIGIN_PLACE = 'JFK';
-const DESTINATION_PLACE = 'AUS';
-const DEPART_DATE = '2020-01-01';
-const RETURN_DATE = '2020-01-10';
-
 describe('FlyMe', () => {
     describe('#constructor()', function () {
         it('should construct', function () {
@@ -18,34 +13,78 @@ describe('FlyMe', () => {
             assert.ok(app);
         });
     });
-    describe('getPrice', () => {
-        it('checks number 1', async function () {
+    describe('getPrice', function () {
+        it('Can get the current price', function () {
+            return t.getPrice(getConfig().applet.user).then((new_price) => {
+                console.log('<<<<<get current price>>>>', new_price);
+                assert.notEqual(new_price, null);
+            }).catch((error) => {
+                assert.fail(error);
+            })
+        })
+    });
+    describe('localStorage', function () {
+        it('Can get price when none is stored', function () {
+            assert.equal(t.getLastPrice(), null);
+          })
+        it('check the color of the key', async function () {
             const config = getConfig();
             let app = await buildApp(config);
-            console.log('<<<<<<', ORIGIN_PLACE);
-            console.log('<<<<<<', DESTINATION_PLACE);
-            console.log('<<<<<<', DEPART_DATE);
-            console.log('<<<<<<', RETURN_DATE);
-            })
+            return app.run().then((signal) => {
+                assert.ok(signal); 
+                assert.equal(signal.points[0][0].color, '#000000');
+            }).catch((error) => {
+                assert.fail(error)
+            });
         });
+    });
+    describe('#run()', () => {
+        it('Can store the last price and get it from storage', function () {
+            const price = '100';
+            console.log('<<<<<set new price>>>>', price);
+            assert.ok(t.setLastPrice(price));
+            assert.equal(t.getLastPrice(), price);
+        })
+        it('check the color of the key', async function () {
+            const config = getConfig();
+            let app = await buildApp(config);
+            return app.run().then((signal) => {
+                assert.ok(signal); 
+                assert.equal(signal.points[0][0].color, '#DF0101');
+            }).catch((error) => {
+                assert.fail(error)
+            });
+        });
+    });
+    describe('#run()', () => {
+        it('Can store the last price and get it from storage', function () {
+            const price = '500';
+            console.log('<<<<<set new price>>>>', price);
+            assert.ok(t.setLastPrice(price));
+            assert.equal(t.getLastPrice(), price);
+        })
+        it('check the color of the key', async function () {
+            const config = getConfig();
+            let app = await buildApp(config);
+            return app.run().then((signal) => {
+                assert.ok(signal); 
+                assert.equal(signal.points[0][0].color, '#088A08');
+            }).catch((error) => {
+                assert.fail(error)
+            });
+        });
+    });
 });
-    //       return t.getPrice().then((price) => {
-    //         assert.ok(price, 'Error in price.');
-    //         // assert.equal(currency, price.data.base + '-' + price.data.currency, 'Currency does not match: ' + currency);
-    //       }).catch((error) => {
-    //         assert.fail(error);
-    //       })
-    //     })
-    //   });
     
 function getConfig() {
     const defaultConfig = {
         applet: {
             user: {
-                ORIGIN_PLACE: ORIGIN_PLACE,
-                DESTINATION_PLACE: DESTINATION_PLACE,
-                DEPART_DATE: DEPART_DATE,
-                RETURN_DATE: RETURN_DATE
+                ORIGIN_PLACE: 'JFK',
+                DESTINATION_PLACE: 'AUS',
+                DEPART_DATE: '2020-01-01',
+                RETURN_DATE: '2020-01-10',
+                apiKey: ''
             }
         },
         geometry: {
