@@ -53,7 +53,7 @@
         "help": "",
         "required": true,
         "order": 1,
-        "value": "0",
+        "value": "SFO",
         "controlType": "textbox"
       },
       {
@@ -62,7 +62,7 @@
         "help": "",
         "required": true,
         "order": 1,
-        "value": "0",
+        "value": "AUS",
         "controlType": "textbox"
       },
       {
@@ -71,16 +71,16 @@
         "help": "yyyy-mm-dd",
         "required": true,
         "order": 1,
-        "value": "0",
+        "value": "2020-01-01",
         "controlType": "textbox"
       },
       {
         "key": "RETURN_DATE",
-        "label": "Choose an return date.",
+        "label": "Choose an optional return date.",
         "help": "yyyy-mm-dd",
-        "required": true,
+        "required": false,
         "order": 1,
-        "value": "0",
+        "value": "",
         "controlType": "textbox"
       }
     ]
